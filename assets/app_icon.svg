@@ -1,0 +1,71 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="lotusGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#F7931E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFD93D;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="petalGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A855F7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="petalGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06B6D4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0891B2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="petalGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="512" cy="512" r="512" fill="url(#lotusGradient)"/>
+  
+  <!-- Lotus petals -->
+  <!-- Center petal -->
+  <ellipse cx="512" cy="512" rx="200" ry="280" fill="white" opacity="0.9"/>
+  
+  <!-- Side petals -->
+  <ellipse cx="312" cy="512" rx="180" ry="240" fill="url(#petalGradient1)" opacity="0.8"/>
+  <ellipse cx="712" cy="512" rx="180" ry="240" fill="url(#petalGradient1)" opacity="0.8"/>
+  
+  <!-- Top and bottom petals -->
+  <ellipse cx="512" cy="312" rx="240" ry="180" fill="url(#petalGradient2)" opacity="0.8"/>
+  <ellipse cx="512" cy="712" rx="240" ry="180" fill="url(#petalGradient2)" opacity="0.8"/>
+  
+  <!-- Diagonal petals -->
+  <ellipse cx="412" cy="412" rx="200" ry="200" fill="url(#petalGradient3)" opacity="0.7"/>
+  <ellipse cx="612" cy="412" rx="200" ry="200" fill="url(#petalGradient3)" opacity="0.7"/>
+  <ellipse cx="412" cy="612" rx="200" ry="200" fill="url(#petalGradient3)" opacity="0.7"/>
+  <ellipse cx="612" cy="612" rx="200" ry="200" fill="url(#petalGradient3)" opacity="0.7"/>
+  
+  <!-- Center circle -->
+  <circle cx="512" cy="512" r="120" fill="#7C3AED"/>
+  
+  <!-- Om symbol -->
+  <text x="512" y="540" font-family="Arial, sans-serif" font-size="80" font-weight="bold" text-anchor="middle" fill="white">ॐ</text>
+  
+  <!-- Musical notes -->
+  <g fill="#F59E0B" opacity="0.8">
+    <!-- Top left note -->
+    <ellipse cx="280" cy="280" rx="15" ry="20"/>
+    <rect x="295" y="280" width="4" height="60" rx="2"/>
+    <ellipse cx="295" cy="340" rx="8" ry="6"/>
+    
+    <!-- Top right note -->
+    <ellipse cx="744" cy="280" rx="15" ry="20"/>
+    <rect x="759" y="280" width="4" height="60" rx="2"/>
+    <ellipse cx="759" cy="340" rx="8" ry="6"/>
+    
+    <!-- Bottom left note -->
+    <ellipse cx="280" cy="744" rx="15" ry="20"/>
+    <rect x="295" y="744" width="4" height="60" rx="2"/>
+    <ellipse cx="295" cy="804" rx="8" ry="6"/>
+    
+    <!-- Bottom right note -->
+    <ellipse cx="744" cy="744" rx="15" ry="20"/>
+    <rect x="759" y="744" width="4" height="60" rx="2"/>
+    <ellipse cx="759" cy="804" rx="8" ry="6"/>
+  </g>
+</svg>

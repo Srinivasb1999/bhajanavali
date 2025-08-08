@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "482698866125",
+    "project_id": "bhajanavali-ce595",
+    "storage_bucket": "bhajanavali-ce595.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:482698866125:android:ccb58a6a145bc344bce884",
+        "android_client_info": {
+          "package_name": "com.example.bhajanavali"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVYkCIb303yago9ru8gc_vjyHREGtGQfs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
