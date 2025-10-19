@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../models/song.dart';
 import 'song_management_page.dart';
 
@@ -35,7 +36,7 @@ class SongDetailPage extends StatelessWidget {
                   ),
                 );
               },
-              tooltip: 'Edit Song',
+              tooltip: AppLocalizations.of(context)!.editSong,
             ),
         ],
       ),
@@ -91,7 +92,7 @@ class SongDetailPage extends StatelessWidget {
                       ),
                       SizedBox(height: 16),
                       Text(
-                        'Lyrics not available',
+                        AppLocalizations.of(context)!.lyricsNotAvailableTitle,
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.grey[600],
@@ -100,7 +101,7 @@ class SongDetailPage extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'The lyrics for this song are not yet available.',
+                        AppLocalizations.of(context)!.lyricsNotAvailableBody,
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey[500],
@@ -126,7 +127,7 @@ class SongDetailPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Song Details',
+                        AppLocalizations.of(context)!.songDetails,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -169,7 +170,7 @@ class SongDetailPage extends StatelessWidget {
                         if (song.raaga != null && song.raaga!.length > 1) ...[
                           SizedBox(height: 12),
                           Text(
-                            'All Ragas: ${song.raaga!.join(', ')}',
+                            AppLocalizations.of(context)!.allRagasLine(song.raaga!.join(', ')),
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.grey[600],
@@ -185,8 +186,8 @@ class SongDetailPage extends StatelessWidget {
                       if (song.audioUrl != null) ...[
                         _buildDetailRow(
                           icon: Icons.audiotrack,
-                          label: 'Audio Available',
-                          value: 'Yes',
+                          label: AppLocalizations.of(context)!.audioAvailable,
+                          value: AppLocalizations.of(context)!.yes,
                           color: Colors.green[600]!,
                         ),
                         SizedBox(height: 12),
@@ -195,8 +196,8 @@ class SongDetailPage extends StatelessWidget {
                       if (song.imageUrl != null) ...[
                         _buildDetailRow(
                           icon: Icons.image,
-                          label: 'Image Available',
-                          value: 'Yes',
+                          label: AppLocalizations.of(context)!.imageAvailable,
+                          value: AppLocalizations.of(context)!.yes,
                           color: Colors.blue[600]!,
                         ),
                         SizedBox(height: 12),
@@ -205,7 +206,7 @@ class SongDetailPage extends StatelessWidget {
                       if (song.createdAt != null) ...[
                         _buildDetailRow(
                           icon: Icons.calendar_today,
-                          label: 'Added',
+                          label: AppLocalizations.of(context)!.added,
                           value: _formatDate(song.createdAt!),
                           color: Colors.orange[600]!,
                         ),

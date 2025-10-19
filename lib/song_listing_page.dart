@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'models/song.dart';
 import 'services/firestore_service.dart';
 import 'pages/song_detail_page.dart';
 import 'dart:async';
 import 'pages/song_management_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SongListingPage extends StatefulWidget {
   final bool isAdminMode;
@@ -184,7 +184,7 @@ class _SongListingPageState extends State<SongListingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bhajanavali'),
+        title: Text(AppLocalizations.of(context)!.appTitle),
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
         actions: [
@@ -199,7 +199,7 @@ class _SongListingPageState extends State<SongListingPage> {
                   ),
                 );
               },
-              tooltip: 'Add New Song',
+              tooltip: AppLocalizations.of(context)!.addNewSong,
             ),
         ],
       ),
@@ -219,7 +219,7 @@ class _SongListingPageState extends State<SongListingPage> {
                     Expanded(
                       child: DropdownButtonFormField<String>(
                         decoration: InputDecoration(
-                          labelText: 'God',
+                          labelText: AppLocalizations.of(context)!.god,
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         ),
@@ -227,7 +227,7 @@ class _SongListingPageState extends State<SongListingPage> {
                         items: [
                           DropdownMenuItem<String>(
                             value: null,
-                            child: Text('All Gods'),
+                            child: Text(AppLocalizations.of(context)!.allGods),
                           ),
                           ...gods.map((god) => DropdownMenuItem(
                             value: god,
@@ -245,7 +245,7 @@ class _SongListingPageState extends State<SongListingPage> {
                     Expanded(
                       child: DropdownButtonFormField<String>(
                         decoration: InputDecoration(
-                          labelText: 'Raga',
+                          labelText: AppLocalizations.of(context)!.raga,
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         ),
@@ -253,7 +253,7 @@ class _SongListingPageState extends State<SongListingPage> {
                         items: [
                           DropdownMenuItem<String>(
                             value: null,
-                            child: Text('All Ragas'),
+                            child: Text(AppLocalizations.of(context)!.allRagas),
                           ),
                           ...ragas.map((raga) => DropdownMenuItem(
                             value: raga,
@@ -290,7 +290,7 @@ class _SongListingPageState extends State<SongListingPage> {
                               ),
                               SizedBox(height: 16),
                               Text(
-                                'Connection Error',
+                                AppLocalizations.of(context)!.connectionError,
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -299,7 +299,7 @@ class _SongListingPageState extends State<SongListingPage> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                'Unable to connect to the database. Please check your Firestore configuration and security rules.',
+                                AppLocalizations.of(context)!.connectionErrorDetails,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 14,
@@ -313,7 +313,7 @@ class _SongListingPageState extends State<SongListingPage> {
                                     // This will trigger a rebuild and retry
                                   });
                                 },
-                                child: Text('Retry'),
+                                child: Text(AppLocalizations.of(context)!.retry),
                               ),
                             ],
                           ),
@@ -355,7 +355,7 @@ class _SongListingPageState extends State<SongListingPage> {
                             ),
                             SizedBox(height: 16),
                             Text(
-                              'No songs found',
+                              AppLocalizations.of(context)!.noSongsFound,
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.grey[600],
@@ -363,7 +363,7 @@ class _SongListingPageState extends State<SongListingPage> {
                             ),
                             if (selectedGod != null || selectedRaga != null || selectedAlphabet != null)
                               Text(
-                                'Try adjusting your filters',
+                                AppLocalizations.of(context)!.tryAdjustFilters,
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.grey[500],

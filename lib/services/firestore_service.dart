@@ -111,4 +111,22 @@ class FirestoreService {
       return [];
     }
   }
+
+  // Get unique authors from songs collection
+  Future<List<String>> getUniqueAuthors() async {
+    try {
+      final snapshot = await _firestore.collection('songs').get();
+      final authors = snapshot.docs
+          .map((doc) => doc.data()['author'] as String?)
+          .where((author) => author != null && author.isNotEmpty)
+          .map((author) => author!) // Convert String? to String
+          .toSet()
+          .toList();
+      authors.sort();
+      return authors;
+    } catch (error) {
+      print('Error fetching unique authors: $error');
+      return [];
+    }
+  }
 }

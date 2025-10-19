@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../models/song.dart';
+import '../services/firestore_service.dart';
+import '../widgets/paginated_dropdown.dart';
 
 class SongManagementPage extends StatefulWidget {
   final Song? songToEdit; // If provided, we're editing an existing song
@@ -21,6 +24,14 @@ class _SongManagementPageState extends State<SongManagementPage> {
   
   bool _isLoading = false;
   bool _isEditing = false;
+  bool _isLoadingOptions = true;
+  
+  // Options for dropdowns
+  List<String> _gods = [];
+  List<String> _authors = [];
+  List<String> _ragas = [];
+  
+  final FirestoreService _firestoreService = FirestoreService();
 
   @override
   void initState() {
@@ -35,6 +46,32 @@ class _SongManagementPageState extends State<SongManagementPage> {
       _raagaController.text = song.raaga?.join(', ') ?? '';
       _authorController.text = song.author ?? '';
       _godController.text = song.god ?? '';
+    }
+    
+    _loadDropdownOptions();
+  }
+
+  Future<void> _loadDropdownOptions() async {
+    setState(() {
+      _isLoadingOptions = true;
+    });
+    
+    try {
+      final gods = await _firestoreService.getUniqueGods();
+      final authors = await _firestoreService.getUniqueAuthors();
+      final ragas = await _firestoreService.getUniqueRagas();
+      
+      setState(() {
+        _gods = gods;
+        _authors = authors;
+        _ragas = ragas;
+        _isLoadingOptions = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoadingOptions = false;
+      });
+      // Handle error silently for now
     }
   }
 
@@ -77,7 +114,7 @@ class _SongManagementPageState extends State<SongManagementPage> {
         
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Song updated successfully!'),
+            content: Text(AppLocalizations.of(context)!.songUpdatedSuccess),
             backgroundColor: Colors.green,
           ),
         );
@@ -89,7 +126,7 @@ class _SongManagementPageState extends State<SongManagementPage> {
         
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Song added successfully!'),
+            content: Text(AppLocalizations.of(context)!.songAddedSuccess),
             backgroundColor: Colors.green,
           ),
         );
@@ -114,14 +151,14 @@ class _SongManagementPageState extends State<SongManagementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isEditing ? 'Edit Song' : 'Add New Song'),
+        title: Text(_isEditing ? AppLocalizations.of(context)!.editSong : AppLocalizations.of(context)!.addNewSong),
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -131,95 +168,97 @@ class _SongManagementPageState extends State<SongManagementPage> {
                     TextFormField(
                       controller: _titleController,
                       decoration: InputDecoration(
-                        labelText: 'Title *',
-                        hintText: 'Enter song title in Kannada',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.title),
+                        labelText: AppLocalizations.of(context)!.titleLabel,
+                        hintText: AppLocalizations.of(context)!.titleHint,
+                        border: const OutlineInputBorder(),
+                        prefixIcon: const Icon(Icons.title),
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Title is required';
+                          return AppLocalizations.of(context)!.titleLabel;
                         }
                         return null;
                       },
                       maxLines: 2,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
-                    // God Field
-                    TextFormField(
-                      controller: _godController,
-                      decoration: InputDecoration(
-                        labelText: 'God *',
-                        hintText: 'Enter the god this song is dedicated to',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.auto_awesome),
-                      ),
+                    // God Field - Paginated Dropdown
+                    PaginatedDropdown(
+                      labelText: AppLocalizations.of(context)!.godLabel,
+                      hintText: AppLocalizations.of(context)!.godHint,
+                      prefixIcon: Icons.auto_awesome,
+                      options: _gods,
+                      value: _godController.text.isEmpty ? null : _godController.text,
+                      onChanged: (value) {
+                        setState(() {
+                          _godController.text = value ?? '';
+                        });
+                      },
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'God is required';
+                          return AppLocalizations.of(context)!.godLabel;
                         }
                         return null;
                       },
+                      isLoading: _isLoadingOptions,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
-                    // Author Field
-                    TextFormField(
-                      controller: _authorController,
-                      decoration: InputDecoration(
-                        labelText: 'Author *',
-                        hintText: 'Enter the author/composer name',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.person),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Author is required';
-                        }
-                        return null;
+                    // Author Field - Paginated Dropdown
+                    PaginatedDropdown(
+                      labelText: AppLocalizations.of(context)!.authorLabel,
+                      hintText: AppLocalizations.of(context)!.authorHint,
+                      prefixIcon: Icons.person,
+                      options: _authors,
+                      value: _authorController.text.isEmpty ? null : _authorController.text,
+                      onChanged: (value) {
+                        setState(() {
+                          _authorController.text = value ?? '';
+                        });
                       },
+                      validator: null, // Make author optional
+                      isLoading: _isLoadingOptions,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
-                    // Raga Field
-                    TextFormField(
-                      controller: _raagaController,
-                      decoration: InputDecoration(
-                        labelText: 'Raga *',
-                        hintText: 'Enter raga(s) separated by commas',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.music_note),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Raga is required';
-                        }
-                        return null;
+                    // Raga Field - Paginated Dropdown
+                    PaginatedDropdown(
+                      labelText: AppLocalizations.of(context)!.ragaLabel,
+                      hintText: AppLocalizations.of(context)!.ragaHint,
+                      prefixIcon: Icons.music_note,
+                      options: _ragas,
+                      value: _raagaController.text.isEmpty ? null : _raagaController.text,
+                      onChanged: (value) {
+                        setState(() {
+                          _raagaController.text = value ?? '';
+                        });
                       },
+                      validator: null, // Make raga optional
+                      isLoading: _isLoadingOptions,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
                     // Lyrics Field
                     TextFormField(
                       controller: _lyricsController,
                       decoration: InputDecoration(
-                        labelText: 'Lyrics *',
-                        hintText: 'Enter the complete lyrics in Kannada',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.music_note),
+                        labelText: AppLocalizations.of(context)!.lyricsLabel,
+                        hintText: AppLocalizations.of(context)!.lyricsHint,
+                        border: const OutlineInputBorder(),
+                        prefixIcon: const Icon(Icons.music_note),
                         alignLabelWithHint: true,
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Lyrics are required';
+                          return AppLocalizations.of(context)!.lyricsLabel;
                         }
                         return null;
                       },
                       maxLines: 10,
                       textAlignVertical: TextAlignVertical.top,
                     ),
-                    SizedBox(height: 24),
+                    const SizedBox(height: 24),
 
                     // Save Button
                     ElevatedButton(
@@ -227,34 +266,34 @@ class _SongManagementPageState extends State<SongManagementPage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.deepPurple,
                         foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(vertical: 16),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                       child: Text(
-                        _isEditing ? 'Update Song' : 'Add Song',
-                        style: TextStyle(
+                        _isEditing ? AppLocalizations.of(context)!.updateSong : AppLocalizations.of(context)!.addSong,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
                     // Cancel Button
                     OutlinedButton(
                       onPressed: () => Navigator.pop(context),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.deepPurple,
-                        padding: EdgeInsets.symmetric(vertical: 16),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                       child: Text(
-                        'Cancel',
-                        style: TextStyle(
+                        AppLocalizations.of(context)!.cancel,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
