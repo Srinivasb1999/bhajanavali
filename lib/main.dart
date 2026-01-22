@@ -2,8 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'firebase_options.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'song_listing_page.dart';
-import 'pages/song_management_page.dart';
+// import 'pages/song_management_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +23,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Bhajanavali',
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('kn'),
+      ],
+      locale: const Locale('kn'),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -129,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(height: 32),
               // App Title
               Text(
-                'Bhajanavali',
+                AppLocalizations.of(context)!.appTitle,
                 style: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
@@ -139,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               SizedBox(height: 8),
               Text(
-                'Divine Melodies',
+                AppLocalizations.of(context)!.appTagline,
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.white.withOpacity(0.9),
@@ -152,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 child: Text(
-                  'Welcome to the world of spiritual music',
+                  AppLocalizations.of(context)!.welcomeText,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
@@ -188,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         elevation: 4,
                       ),
                       child: Text(
-                        'Enter App',
+                        AppLocalizations.of(context)!.enterApp,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
